@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bigdata.dao.WorkflowDataLogDao">
+
+    <resultMap id="workflowDataLogMap" type="com.bigdata.model.WorkflowDataLog" >
+        <result property="id" column="ID"/>
+        <result property="wInsId" column="W_INS_ID"/>
+        <result property="exeIndex" column="EXE_INDEX"/>
+        <result property="taskId" column="TASK_ID"/>
+        <result property="taskName" column="TASK_NAME"/>
+        <result property="dataType" column="DATA_TYPE"/>
+        <result property="jsonData" column="JSON_DATA"/>
+        <result property="createTime" column="CREATE_TIME"/>
+    </resultMap>
+
+    <select id="getWorkflowDataLogsByFlowId" parameterType="java.lang.String" resultMap="workflowDataLogMap">
+        SELECT * FROM workflow_data_log WHERE W_INS_ID = #{flowId}
+    </select>
+</mapper>

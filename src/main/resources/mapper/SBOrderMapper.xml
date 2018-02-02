@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bigdata.dao.SBOrderDao">
+
+    <resultMap id="sbOrder" type="com.bigdata.model.SBOrder">
+        <result column="id" property="id"/>
+        <result column="sjly" property="sjly"/>
+        <result column="shbz" property="shbz"/>
+        <result column="gbbz" property="gbbz"/>
+        <result column="rq" property="rq"/>
+        <result column="ghdw" property="ghdw"/>
+        <result column="ghfs" property="ghfs"/>
+        <result column="jhfs" property="jhfs"/>
+        <result column="djbh" property="djbh"/>
+        <result column="bz" property="bz"/>
+        <result column="jhdd" property="jhdd"/>
+        <result column="bm" property="bm"/>
+        <result column="ywy" property="ywy"/>
+        <result column="zd" property="zd"/>
+        <result column="jsfs" property="jsfs"/>
+        <result column="cpmc" property="cpmc"/>
+        <result column="ggbh" property="ggbh"/>
+        <result column="dw" property="dw"/>
+        <result column="sl" property="sl"/>
+        <result column="je" property="je"/>
+        <result column="shr" property="shr"/>
+        <result column="jhrq" property="jhrq"/>
+        <result column="cpcdm" property="cpcdm"/>
+        <result column="hywgbbz" property="hywgbbz"/>
+        <result column="jyjhrq" property="jyjhrq"/>
+        <result column="dhjg" property="dhjg"/>
+        <result column="htdh" property="htdh"/>
+        <result column="zy" property="zy"/>
+        <result column="shrq" property="shrq"/>
+        <result column="hsdj" property="hsdj"/>
+        <result column="xxse" property="xxse"/>
+        <result column="jshj" property="jshj"/>
+        <result column="zdjg" property="zdjg"/>
+        <result column="jhlx" property="jhlx"/>
+        <result column="wlfs" property="wlfs"/>
+        <result column="wlfs1" property="wlfs1"/>
+        <result column="sksl" property="sksl"/>
+        <result column="ksksl" property="ksksl"/>
+        <result column="jbdwsksl" property="jbdwsksl"/>
+    </resultMap>
+
+    <select id="getList" resultMap="sbOrder" parameterType="java.util.Map">
+        SELECT *
+        FROM sb_order
+        <where>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[
+                  rq >= DATE_FORMAT(#{startDate,jdbcType=DATE},'%Y-%m-%d')
+                ]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[
+                  and rq <= DATE_FORMAT(#{endDate,jdbcType=DATE},'%Y-%m-%d')
+                ]]>
+            </if>
+            <if test="ghdw != null and ghdw!= ''">
+                and ghdw LIKE CONCAT('%', #{ghdw}, '%')
+            </if>
+        </where>
+        ORDER BY rq DESC
+        LIMIT #{page}, #{perPage}
+    </select>
+
+    <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+        SELECT COUNT(*)
+        FROM sb_order
+        <where>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[
+                  rq >= DATE_FORMAT(#{startDate,jdbcType=DATE},'%Y-%m-%d')
+                ]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[
+                  and rq <= DATE_FORMAT(#{endDate,jdbcType=DATE},'%Y-%m-%d')
+                ]]>
+            </if>
+            <if test="ghdw != null and ghdw!= ''">
+                and ghdw LIKE CONCAT('%', #{ghdw}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

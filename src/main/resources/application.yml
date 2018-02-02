@@ -1,0 +1,72 @@
+server:
+  port : 8088
+
+#mybatis:
+#  mapper-locations: classpath*:mapper/*.xml
+#  type-aliases-package: com.model
+
+spring:
+#  thymeleaf默认配置
+  thymeleaf:
+    prefix:
+      classpath:templates/
+    suffix:
+      .html
+    mode:
+      HTML5
+    encoding:
+      UTF-8
+    content-type:
+      text/html
+
+  profiles:
+      active: dev
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+---
+spring:
+  profiles: dev
+ms:
+  db:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://139.224.146.23:3306/risk_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: libo
+    password: QxI^$pff92O$
+    maxActive: 500
+flow:
+  #生产 UAT-http://tgapiuat.homefax.cn/web/portal
+  shenyihao: http://139.224.144.178:9181/flow/syncAudit?processKey=flow21
+
+---
+spring:
+  profiles: sit
+ms:
+  db:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://139.224.144.142:3306/frms-portal?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: bangsun_hx2017
+    maxActive: 500
+
+---
+spring:
+  profiles: pro
+ms:
+  db:
+    driverClassName: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://rm-pz5g6eyzp5k9py89p.mysql.rds.aliyuncs.com:3306/frms-portal?useUnicode=true&characterEncoding=UTF-8
+#    username: riskdb
+#    password: 3YuyPS72
+#    maxActive: 500
+    url: jdbc:mysql://172.31.67.211:3306/risk_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: risk
+    password: QxI^$pff92O$
+    maxActive: 500
+flow:
+  #生产 UAT-http://tgapiuat.homefax.cn/web/portal
+  shenyihao: http://139.224.144.178:9181/flow/syncAudit?processKey=flow21

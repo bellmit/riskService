@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bigdata.dao.DealerDao">
+
+    <resultMap id="dealerMap" type="com.bigdata.model.Dealer">
+        <result column="id" property="id"/>
+        <result column="phone" property="phone"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="la" property="la"/>
+        <result column="lo" property="lo"/>
+        <result column="shopNum" property="shopNum"/>
+        <result column="redStarShopNum" property="redStarShopNum"/>
+    </resultMap>
+
+    <!--所有经销商基本信息-->
+    <select id="findAll" resultMap="dealerMap">
+        SELECT
+            a.id AS id,
+            a.PHONE AS phone,
+            a.PROVINCE AS province,
+            a.city AS city,
+            b.LA AS la,
+            b.LO AS lo
+        FROM SBWG_DEALER a
+        LEFT JOIN SBWG_DEALER_CITY b ON b.CITY = a.CITY
+    </select>
+
+    <!--所有经销商的门店信息-->
+    <select id="findAllShop" resultMap="dealerMap">
+        SELECT
+            a.PHONE AS phone,
+            count(1) AS shopNum,
+            sum(
+                1 *
+                IF (
+                    b.MALL_NAME LIKE '%红星%',
+                    1,
+                    0
+                )
+            ) AS redStarShopNum
+        FROM
+            SBWG_DEALER AS a
+        LEFT JOIN SBWG_DEALER_MALL AS b ON a.PHONE = b.PHONE
+        GROUP BY
+            a.PHONE
+    </select>
+</mapper>

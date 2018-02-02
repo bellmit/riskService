@@ -1,0 +1,30 @@
+11:13:09.602 4235 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field dealerDao in com.bigdata.service.impl.DealerServiceImpl required a bean of type 'com.bigdata.dao.DealerDao' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.bigdata.dao.DealerDao' in your configuration.
+
+11:28:01.814 2199 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field dealerMonthSalesDao in com.bigdata.service.impl.DealerServiceImpl required a bean of type 'com.bigdata.dao.DealerMonthSalesDao' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.bigdata.dao.DealerMonthSalesDao' in your configuration.
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bigdata.dao.DealerMonthSalesDao">
+
+    <resultMap id="dealerMonthSalesMap" type="com.bigdata.model.DealerMonthSales">
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
+        <result column="amount" property="amount"/>
+    </resultMap>
+
+    <!--所有经销商每月销售总金额-->
+    <select id="findAmountByYearAndMonth" resultMap="dealerMonthSalesMap">
+        SELECT
+            `YEAR` AS year,
+            `MONTH` AS month,
+            sum(AMOUNT) AS amount
+        FROM SBWG_DEALER_MONTH_SALE
+        GROUP BY `YEAR`, `MONTH`
+    </select>
+
+    <select id="findAllYears" resultMap="dealerMonthSalesMap">
+        SELECT
+            DISTINCT `YEAR` AS year
+        FROM SBWG_DEALER_MONTH_SALE
+    </select>
+
+</mapper>

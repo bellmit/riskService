@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bigdata.dao.WorkflowInstanceDao">
+
+    <resultMap id="workflowInstanceMap" type="com.bigdata.model.WorkflowInstance">
+        <result property="id" column="ID"/>
+        <result property="flowId" column="FLOW_ID"/>
+        <result property="cusId" column="CUS_ID"/>
+        <result property="orderId" column="ORDER_ID"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="phone" column="PHONE"/>
+        <result property="processId" column="PROCESS_ID"/>
+        <result property="processKey" column="PROCESS_KEY"/>
+        <result property="processName" column="PROCESS_NAME"/>
+        <result property="instanceId" column="INSTANCE_ID"/>
+        <result property="taskName" column="TASK_NAME"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="callType" column="CALL_TYPE"/>
+        <result property="status" column="STATUS"/>
+        <result property="statusMsg" column="STATUS_MSG"/>
+        <result property="callbackTimes" column="CALLBACK_TIMES"/>
+        <result property="callbackStatus" column="CALLBACK_STATUS"/>
+        <result property="auditParam" column="AUDIT_PARAM"/>
+    </resultMap>
+
+    <select id="findOneById" parameterType="java.lang.String" resultMap="workflowInstanceMap">
+        SELECT * FROM WORKFLOW_INSTANCE WHERE ID = #{id}
+    </select>
+</mapper>
