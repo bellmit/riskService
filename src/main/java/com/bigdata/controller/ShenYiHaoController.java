@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bigdata.model.PaginatedResult;
 import com.bigdata.service.SBOrderService;
+import com.bigdata.util.BigDecimalUtils;
 import com.bigdata.util.Enum.PageConstant;
 import com.bigdata.util.Enum.ResponseResultEnum;
 import com.bigdata.util.HttpConnectionUtils;
@@ -55,12 +56,13 @@ public class ShenYiHaoController {
         // 经营风险A
         obj.put("frms_payback_decrease_rate", (16365373-40128981)/16365373*100);// 本月回款下降比例
         obj.put("frms_lastY_amount_decrease_rate", 0);// 没有上年度数据，默认通过
-        obj.put("frms_lastM_decrease_rate", ((38123870-35717483)/38123870 * 100));
+        obj.put("frms_lastM_decrease_rate", ((38123870L-35717483L)/38123870L * 100L));
+//        obj.put("frms_lastM_decrease_rate", BigDecimalUtils.mul(38123870.00-35717483.00));
         obj.put("frms_payback_amount", 4012);// 本月回款金额
         obj.put("frms_lastS_amount_decrease_rate", 0);// 本季度经销商累计订单金额较上年度同期下降比例
         // 经营风险B
-        obj.put("frms_last3M_avg_payback_amount", 400);// 最近三个月公司、法人账户月平均销售回款入金额度
-        obj.put("frms_3M_payback_amount", 1200); // 连续出现3个月出现公司、法人账户累计销售回款入金额度
+        obj.put("frms_last3M_avg_payback_amount", (40128981+23238657+29650180+23238657+10751339+14869115)/3/10000);// 最近三个月公司、法人账户月平均销售回款入金额度
+        obj.put("frms_3M_payback_amount", (40128981+23238657+29650180+23238657+10751339+14869115)/10000); // 连续出现3个月出现公司、法人账户累计销售回款入金额度
         if((36464657-39760351)/36464657*100 >20 && (39760351-38123870)/39760351*100 > 20 && (38123870-35717483)/38123870*100 > 20){
             obj.put("frms_3M_amount_decrease_rate", 20);// 连续3个月出现经销商月度订单金额较上月下降
         }else {
@@ -73,7 +75,7 @@ public class ShenYiHaoController {
         }
         // 财务风险A
         obj.put("frms_net_asset_month_decrease_rate", 25);//
-        obj.put("frms_company_debt_rate", 108585492/331237819*100);// 公司资产负债率
+        obj.put("frms_company_debt_rate", 108585492L/331237819*100);// 公司资产负债率
         obj.put("frms_company_gross_margin", 117742045/732071329*100);// 公司毛利润率
         obj.put("frms_company_net_profit_rate", 57653541/732071329*100);// 净利润率
         obj.put("frms_receivables_turnover_days", (44920879+31881817)/2*360/732071329); // 公司应收账款周转天数
