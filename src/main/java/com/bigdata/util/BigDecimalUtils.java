@@ -16,7 +16,9 @@ import java.math.BigDecimal;
 public class BigDecimalUtils { //默认除法运算精度
     private static final int DEF_DIV_SCALE = 10; //这个类不能实例化
 
+    // 保证工具类不能实例化
     private BigDecimalUtils() {
+        throw new Error("Don't instantiate " + getClass());
     }
 
     /**
@@ -32,10 +34,20 @@ public class BigDecimalUtils { //默认除法运算精度
         return b1.add(b2).doubleValue();
     }
 
-    public static Long add(Long v1, Long v2) {
-        BigDecimal b1 = new BigDecimal(Long.toString(v1));
-        BigDecimal b2 = new BigDecimal(Long.toString(v2));
-        return b1.add(b2).longValue();
+    /**
+     * 多个Long类型数字相加运算
+     *
+     * @param vs
+     * @return
+     */
+    public static Long add(Long... vs) {
+        Long t = 0L;
+        for (Long v : vs) {
+            BigDecimal b1 = new BigDecimal(Long.toString(t));
+            BigDecimal b2 = new BigDecimal(Long.toString(v));
+            t = b1.add(b2).longValue();
+        }
+        return t;
     }
 
     /**
