@@ -1,5 +1,7 @@
 package com.bigdata;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -131,6 +133,95 @@ public class MyTest {
         list.add(3463.92);
         list.add(299.18);
         list.add(500470.00);
+
+        Long r = list.stream().mapToLong(value -> Math.round(value)).sum();
+        log.info("r:{}", r);
+    }
+
+    @Test
+    public void test4() {
+
+        List<String> list = Splitter.on("|").splitToList("good|girl|boy");
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    public void test201801() {
+        List<Double> list = new ArrayList<>();
+
+        list.add(2600000.00);
+        list.add(1400000.00);
+        list.add(500000.00);
+        list.add(4800000.00);
+        list.add(600000.00);
+        list.add(2000000.00);
+        list.add(2000000.00);
+        list.add(1950000.00);
+        list.add(1350000.00);
+        list.add(200000.00);
+        list.add(3000000.00);
+        list.add(2930000.00);
+        list.add(1600000.00);
+        list.add(1940000.00);
+        list.add(100000.00);
+        list.add(2100000.00);
+        list.add(1540000.00);
+        list.add(2100000.00);
+        list.add(1500000.00);
+        list.add(3072482.13);
+        list.add(6975.00);
+        list.add(9718.90);
+        list.add(1670000.00);
+        list.add(15300.00);
+        list.add(10540.00);
+        list.add(5539.00);
+        list.add(3006.55);
+        list.add(7653.57);
+        list.add(46164.86);
+        list.add(1859.97);
+        list.add(6437.22);
+        list.add(12393.00);
+        list.add(2669.00);
+        list.add(121.04);
+        list.add(47834.43);
+        list.add(20277.94);
+        list.add(6375.00);
+        list.add(2510.56);
+        list.add(300000.00);
+        list.add(500000.00);
+        list.add(1800000.00);
+        list.add(3200000.00);
+        list.add(12960.00);
+        list.add(2350000.00);
+
+        Long r = list.stream().mapToLong(value -> Math.round(value)).sum();
+        log.info("r:{}", r);
+    }
+
+    @Test
+    public void test201802() {
+
+        List<Double> list = new ArrayList<>();
+
+        list.add(2670000.00);
+        list.add(3000000.00);
+        list.add(700000.00);
+        list.add(50000.00);
+        list.add(4900000.00);
+        list.add(4000000.00);
+        list.add(3600000.00);
+        list.add(4200000.00);
+        list.add(3500000.00);
+        list.add(279.48);
+        list.add(12249.18);
+        list.add(6357.32);
+        list.add(13686.70);
+        list.add(431.46);
+        list.add(2565.64);
+        list.add(3910.00);
+        list.add(6527.32);
+        list.add(9159.60);
+        list.add(15615.18);
 
         Long r = list.stream().mapToLong(value -> Math.round(value)).sum();
         log.info("r:{}", r);

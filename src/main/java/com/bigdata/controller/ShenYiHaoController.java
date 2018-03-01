@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Desciption 深一号决策流调用
@@ -55,35 +57,28 @@ public class ShenYiHaoController {
 
         // 决策流业务参数
         // 经营风险A
-        obj.put("frms_payback_decrease_rate", (16365373-40128981)/16365373*100);// 本月回款下降比例
-        obj.put("frms_lastY_amount_decrease_rate", 0);// 没有上年度数据，默认通过
-//        obj.put("frms_lastM_decrease_rate", ((38123870L-35717483L)/38123870L * 100L));
-        obj.put("frms_lastM_decrease_rate", BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(38123870L,35717483L), 38123870L, 2), 100L));
-        obj.put("frms_payback_amount", 4012);// 本月回款金额
-        obj.put("frms_lastS_amount_decrease_rate", 0);// 本季度经销商累计订单金额较上年度同期下降比例
+        obj.put("frms_payback_decrease_rate", (47320819-26690781)/47320819*100);// 本月回款下降比例
+        obj.put("frms_lastY_amount_decrease_rate", BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(25457264L, 26690781L), 25457264L, 2), 100L));// 本月经销商订单金额较上年度同期下降比例
+        obj.put("frms_lastM_decrease_rate", BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(30827872L,3911773L), 30827872L, 2), 100L));// 本月经销商订单金额较上月下降比例
+        obj.put("frms_payback_amount", 47320819/10000);// 本月回款金额
+        obj.put("frms_lastS_amount_decrease_rate", BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(44235783L, 34739645L), 44235783L, 2), 100L));// 本季度经销商累计订单金额较上年度同期下降比例
+
         // 经营风险B
-//        obj.put("frms_last3M_avg_payback_amount", (40128981+23238657+29650180+23238657+10751339+14869115)/3/10000);// 最近三个月公司、法人账户月平均销售回款入金额度
-        obj.put("frms_last3M_avg_payback_amount", BigDecimalUtils.div(BigDecimalUtils.div(BigDecimalUtils.add(40128981L, 23238657L, 29650180L, 23238657L, 10751339L, 14869115L), 3), 10000, 2));// 最近三个月公司、法人账户月平均销售回款入金额度
-//        obj.put("frms_3M_payback_amount", (40128981+23238657+29650180+23238657+10751339+14869115)/10000); // 连续出现3个月出现公司、法人账户累计销售回款入金额度
-        obj.put("frms_3M_payback_amount", BigDecimalUtils.div(BigDecimalUtils.add(40128981L, 23238657L, 29650180L, 23238657L, 10751339L, 14869115L), 10000, 2)); // 连续出现3个月出现公司、法人账户累计销售回款入金额度
-        if((36464657-39760351)/36464657*100 >20 && (39760351-38123870)/39760351*100 > 20 && (38123870-35717483)/38123870*100 > 20){
+        obj.put("frms_last3M_avg_payback_amount", BigDecimalUtils.div(BigDecimalUtils.div(BigDecimalUtils.add(47320819L, 26690781L, 40128981L), 3), 10000, 2));// 最近三个月公司、法人账户月平均销售回款入金额度
+        obj.put("frms_3M_payback_amount", BigDecimalUtils.div(BigDecimalUtils.add(47320819L, 26690781L, 40128981L), 10000, 2)); // 连续出现3个月出现公司、法人账户累计销售回款入金额度
+        if((30827872-3911773)/30827872*100 >20 && (35717483-30827872)/35717483*100 > 20 && (38123870-35717483)/38123870*100 > 20){
             obj.put("frms_3M_amount_decrease_rate", 20);// 连续3个月出现经销商月度订单金额较上月下降
         }else {
             obj.put("frms_3M_amount_decrease_rate", 0);
         }
-        if((35717483+38123870+39760351)/10000/3 < 400){
+        if((30827872+3911773+35717483)/10000/3 < 400){
             obj.put("frms_last3M_avg_amount", 0);// 近3个月经销商月平均订单金额
         }else{
-            obj.put("frms_last3M_avg_amount", (35717483+38123870+39760351)/10000/3);
+            obj.put("frms_last3M_avg_amount", (30827872+3911773+35717483)/10000/3);
         }
+
         // 财务风险A
         obj.put("frms_net_asset_month_decrease_rate", 25);//
-//        obj.put("frms_company_debt_rate", 108585492L/331237819*100);// 公司资产负债率
-//        obj.put("frms_company_gross_margin", 117742045/732071329*100);// 公司毛利润率
-//        obj.put("frms_company_net_profit_rate", 57653541/732071329*100);// 净利润率
-//        obj.put("frms_receivables_turnover_days", (44920879+31881817)/2*360/732071329); // 公司应收账款周转天数
-//        obj.put("frms_stock_turnover_days", (188718629+144589746)/2*360/613794926);// 存货周转天数
-
         obj.put("frms_company_debt_rate", BigDecimalUtils.div(108585492L, 331237819L, 2)*100);// 公司资产负债率
         obj.put("frms_company_gross_margin", BigDecimalUtils.div(117742045L, 732071329L, 2)*100);// 公司毛利润率
         obj.put("frms_company_net_profit_rate", BigDecimalUtils.div(57653541L, 732071329L, 2)*100);// 净利润率
@@ -93,22 +88,18 @@ public class ShenYiHaoController {
         obj.put("frms_last_month_result_a", 1);// 上月通过
 
         // 财务风险B
-//        obj.put("frms_net_asset_year_decrease_rate", (455147973-331237819)/455147973*100);// 公司年末净资产余额较年初下降比例
-//        obj.put("frms_company_debt_rate", 80);// 公司资产负债率
-//        obj.put("frms_quick_rate", (303421933-144589746)/108585492 * 100);// 公司速动比率
-//        obj.put("frms_liquidity_rate", 303421933/108585492*100);// 流动比率
-
         obj.put("frms_net_asset_year_decrease_rate", BigDecimalUtils.div(BigDecimalUtils.sub(455147973L, 331237819L), 455147973L, 2) * 100);// 公司年末净资产余额较年初下降比例
 //        obj.put("frms_company_debt_rate", 80);// 公司资产负债率
         obj.put("frms_quick_rate", BigDecimalUtils.div(BigDecimalUtils.sub(303421933L, 144589746L), 108585492L, 2) * 100);// 公司速动比率
         obj.put("frms_liquidity_rate", BigDecimalUtils.div(303421933L, 108585492L, 2) * 100);// 流动比率
         obj.put("frms_main_business_amount_season_decrease_rate", 0); // 本季度公司主营业务收入金额较上年同期下降比例(上年度没有)
-        obj.put("frms_season_net_profit_amount", BigDecimalUtils.sub(57653541L, 63973509L)); // 本季度公司累计净利润金额
-        obj.put("frms_is_loss", 1); // 经我司评估本年度公司净利润将处于亏损状态
+//        obj.put("frms_season_net_profit_amount", BigDecimalUtils.sub(57653541L, 63973509L)); // 本季度公司累计净利润金额
+        obj.put("frms_season_net_profit_amount", 1); // 本季度公司累计净利润金额
+        obj.put("frms_is_loss", 0); // 经我司评估本年度公司净利润将处于亏损状态
 
         obj.put("frms_last_month_result_b", 1);// 上月通过
         // 法律信用风险
-        obj.put("frms_lawsuit_net_asset_rate", 40); // 诉讼金额比例
+        obj.put("frms_lawsuit_net_asset_rate", 0); // 诉讼金额比例
         obj.put("frms_is_overdue", 0); // 借款人、借款企业贷款尚处于逾期状态
         // 其他风险
         obj.put("frms_is_reject", 0);
@@ -124,6 +115,8 @@ public class ShenYiHaoController {
                     .map(a -> a.getBoolean("success") ? a.getJSONObject("data").getJSONArray("nodeResults") : null)
                     .get();
             List<JSONObject> rules = new ArrayList<>();
+            // 正则判断：字符串是否有数字（普通规则）
+            Pattern p = Pattern.compile("[0-9]");
             ruleArray.forEach(a -> {
                 JSONArray risks = JSON.parseObject(a.toString()).getJSONObject("result").getJSONArray("risks");
                 String taskName = JSON.parseObject(a.toString()).getString("taskName");
@@ -131,11 +124,17 @@ public class ShenYiHaoController {
                     JSONObject r = JSON.parseObject(risk.toString());
                     String tmp = r.getString("ruleName");
                     JSONObject rule = new JSONObject();
-                    rule.put("taskName", taskName);
-                    rule.put("ruleCode", tmp.substring(tmp.indexOf(":") + 1, tmp.lastIndexOf(":")));
-                    rule.put("ruleName", tmp.substring(tmp.lastIndexOf(":") + 1, tmp.length()));
 
-                    rules.add(rule);
+                    String ruleCode = tmp.substring(tmp.indexOf(":") + 1, tmp.lastIndexOf(":"));
+                    Matcher m = p.matcher(ruleCode);
+                    if (m.find()) {
+                        rule.put("taskName", taskName);
+                        rule.put("ruleCode", ruleCode);
+                        rule.put("ruleName", tmp.substring(tmp.lastIndexOf(":") + 1, tmp.length()));
+                        rules.add(rule);
+
+                    }
+
                 });
             });
             logger.info("rules:{}", rules);
