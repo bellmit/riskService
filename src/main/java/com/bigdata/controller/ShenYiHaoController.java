@@ -57,8 +57,8 @@ public class ShenYiHaoController {
 
         // 决策流业务参数
         // 经营风险A
-        obj.put("frms_payback_decrease_rate", (47320819-26690781)/47320819*100);// 本月回款下降比例
-        obj.put("frms_lastY_amount_decrease_rate", BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(25457264L, 26690781L), 25457264L, 2), 100L));// 本月经销商订单金额较上年度同期下降比例
+        obj.put("frms_payback_decrease_rate", BigDecimalUtils.div(BigDecimalUtils.sub(47320819L, 26690781L), 47320819L, 2) * 100);// 本月回款下降比例
+        obj.put("frms_lastY_amount_decrease_rate", BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(25457264L, 3911773L), 25457264L, 2), 100L));// 本月经销商订单金额较上年度同期下降比例
         obj.put("frms_lastM_decrease_rate", BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(30827872L,3911773L), 30827872L, 2), 100L));// 本月经销商订单金额较上月下降比例
         obj.put("frms_payback_amount", 47320819/10000);// 本月回款金额
         obj.put("frms_lastS_amount_decrease_rate", BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(44235783L, 34739645L), 44235783L, 2), 100L));// 本季度经销商累计订单金额较上年度同期下降比例
@@ -78,7 +78,7 @@ public class ShenYiHaoController {
         }
 
         // 财务风险A
-        obj.put("frms_net_asset_month_decrease_rate", 25);//
+        obj.put("frms_net_asset_month_decrease_rate", 0);//
         obj.put("frms_company_debt_rate", BigDecimalUtils.div(108585492L, 331237819L, 2)*100);// 公司资产负债率
         obj.put("frms_company_gross_margin", BigDecimalUtils.div(117742045L, 732071329L, 2)*100);// 公司毛利润率
         obj.put("frms_company_net_profit_rate", BigDecimalUtils.div(57653541L, 732071329L, 2)*100);// 净利润率
