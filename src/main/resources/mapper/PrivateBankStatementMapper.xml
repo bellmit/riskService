@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bigdata.dao.PrivateBankStatementDao">
+
+    <resultMap id="sbOrder" type="com.bigdata.model.PrivateBankStatement">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="account_no" property="accountNo"/>
+        <result column="deal_time" property="dealTime"/>
+        <result column="summary" property="summary"/>
+        <result column="channel" property="channel"/>
+        <result column="deal_country_name" property="dealCountryName"/>
+        <result column="cash_ex_code" property="cashExCode"/>
+        <result column="deal_in_amount" property="dealInAmount"/>
+        <result column="deal_out_amount" property="dealOutAmount"/>
+        <result column="deal_currency" property="dealCurrency"/>
+        <result column="billing_in_amount" property="billingInAmount"/>
+        <result column="billing_out_amount" property="billingOutAmount"/>
+        <result column="billing_currency" property="billingCurrency"/>
+        <result column="balance" property="balance"/>
+        <result column="recipient_amount_name" property="recipientAccountName"/>
+    </resultMap>
+    
+    <select id="getLastMonthCreditAmount" resultType="java.util.Map" parameterType="java.lang.Long">
+
+    </select>
+    
+</mapper>
