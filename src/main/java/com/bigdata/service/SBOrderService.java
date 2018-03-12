@@ -16,4 +16,6 @@ public interface SBOrderService {
     List<SBOrder> listOrders(Map<String, Object> map);
 
     Integer countOrders(Map<String, Object> map);
+
+    Long getOrderAmount(Map<String, Object> map);
 }

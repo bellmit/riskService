@@ -14,4 +14,5 @@ import java.util.Map;
  */
 public interface PublicBankStatementDao {
 
+    Long getLastMonthCreditAmount(Map<String, Object> map);
 }

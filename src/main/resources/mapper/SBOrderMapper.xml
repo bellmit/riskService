@@ -86,4 +86,13 @@
         </where>
     </select>
 
+    <!--X月前，该月订单销售额-->
+    <select id="getOrderAmount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT
+            SUM(jshj)
+        FROM sb_order
+        WHERE
+        YEAR(rq) = #{year}
+        AND MONTH(rq) = #{month}
+    </select>
 </mapper>

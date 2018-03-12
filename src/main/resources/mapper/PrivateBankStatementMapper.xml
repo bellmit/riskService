@@ -20,9 +20,19 @@
         <result column="balance" property="balance"/>
         <result column="recipient_amount_name" property="recipientAccountName"/>
     </resultMap>
-    
-    <select id="getLastMonthCreditAmount" resultType="java.util.Map" parameterType="java.lang.Long">
 
+    <!--X个月前，法人对私回款金额-->
+    <select id="getLastMonthCreditAmount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT
+	      SUM(billing_in_amount)
+        FROM private_bank_statement
+        WHERE
+        YEAR(deal_time) = #{year}
+        AND MONTH(deal_time) = #{month}
+        AND user_id = #{userId}
+        <foreach collection="keywords" index="index" item="keyword" open="" close="">
+            AND locate(recipient_account_name, #{keyword}) = 0
+        </foreach>
     </select>
     
 </mapper>

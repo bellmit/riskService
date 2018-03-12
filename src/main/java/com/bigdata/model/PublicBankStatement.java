@@ -23,7 +23,7 @@ import java.util.Date;
 public class PublicBankStatement {
 
     private Long id;                    // id
-    private String factoryNo;           // 工厂号
+    private String factoryId;           // 工厂号
     private String voucherNo;           // 凭证号
     private String accountNo;           // 本方账号
     private String recipientAccountNo;  // 对方账号

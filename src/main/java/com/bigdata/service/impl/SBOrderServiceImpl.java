@@ -44,4 +44,10 @@ public class SBOrderServiceImpl implements SBOrderService {
 
         return sbOrderDao.getCount(map);
     }
+
+    @Override
+    public Long getOrderAmount(Map<String, Object> map) {
+
+        return sbOrderDao.getOrderAmount(map);
+    }
 }

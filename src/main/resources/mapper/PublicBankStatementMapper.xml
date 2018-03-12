@@ -4,7 +4,7 @@
 
     <resultMap id="sbOrder" type="com.bigdata.model.PublicBankStatement">
         <result column="id" property="id"/>
-        <result column="factory_no" property="factoryNo"/>
+        <result column="factory_id" property="factoryId"/>
         <result column="voucher_no" property="voucherNo"/>
         <result column="account_no" property="accountNo"/>
         <result column="recipient_account_no" property="recipientAccountNo"/>
@@ -20,9 +20,19 @@
         <result column="description" property="description"/>
         <result column="channel" property="channel"/>
     </resultMap>
-    
-    <select id="getLastMonthCreditAmount" resultType="java.util.Map" parameterType="java.lang.Long">
 
+    <!--X月前，屏蔽关键字，对公银行流水回款金额-->
+    <select id="getLastMonthCreditAmount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT
+            SUM(credit_amount)
+        FROM public_bank_statement
+        WHERE
+            YEAR(deal_time) = #{year}
+            AND MONTH(deal_time) = #{month}
+            AND factory_id = #{factoryId}
+            <foreach collection="keywords" index="index" item="keyword" open="" close="">
+                AND locate(recipient_company_name, #{keyword}) = 0
+            </foreach>
     </select>
     
 </mapper>

@@ -17,4 +17,6 @@ public interface SBOrderDao {
     List<SBOrder> getList(Map<String, Object> map);
 
     Integer getCount(Map<String, Object> map);
+
+    Long getOrderAmount(Map<String, Object> map);
 }
