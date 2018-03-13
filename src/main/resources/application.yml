@@ -28,6 +28,10 @@ pagehelper:
   supportMethodsArguments: true
   params: count=countSql
 
+# spring-security请求地址
+token:
+  url: http://localhost:8088/oauth/token
+
 ---
 spring:
   profiles: dev
