@@ -3,8 +3,11 @@ package com.bigdata.controller;
 import com.alibaba.fastjson.JSON;
 import com.bigdata.security.AccessToken;
 import com.bigdata.security.AuthorizationServerConfiguration;
+import com.bigdata.service.UserService;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +25,7 @@ import java.util.Map;
  * CreateTime 2018/3/13 10:36
  * UpdateTime 2018/3/13 10:36
  */
+@Slf4j
 @RestController
 public class SystemController {
 
@@ -32,6 +36,9 @@ public class SystemController {
 
     @Value("${token.url}")
     private String tokenUrl;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("/cors")
     public ResponseEntity<?> corsHandler(HttpServletRequest request, HttpServletResponse response) {
@@ -72,7 +79,14 @@ public class SystemController {
                 userTokenMap.put(accessToken.getAccess_token(), username);
                 userSessionMap.put(accessToken.getAccess_token(), sessionId);
 
-                // todo record the user
+                // record the user
+                try {
+                    int loginRecord = userService.saveUserLoginRecord(userService.getOne(username).getId(), getIpAddress(httpServletRequest));
+                    log.info("write user login record {}", loginRecord > 0 ? "success!" : "fail!");
+                } catch (Exception e) {
+                    log.error("write user login record fail!");
+                    e.printStackTrace();
+                }
             }
             return result;
         } catch (IOException e) {
@@ -80,6 +94,26 @@ public class SystemController {
         }
 
         return "true";
+    }
+
+    public static String getIpAddress(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
     }
 
 }

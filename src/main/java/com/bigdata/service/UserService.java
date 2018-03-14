@@ -1,5 +1,6 @@
 package com.bigdata.service;
 
+import com.bigdata.model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -9,4 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * UpdateTime 2018/3/13 14:15
  */
 public interface UserService extends UserDetailsService {
+    User getOne(String username);
+
+    int saveUserLoginRecord(Long userId, String ip);
 }
