@@ -67,6 +67,12 @@
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 
+		<!--dependency for actuator-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
 		<!-- Spring Security Oauth2 -->
 		<dependency>
 			<groupId>org.springframework.security.oauth</groupId>

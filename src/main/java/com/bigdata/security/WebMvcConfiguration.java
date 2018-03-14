@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 /**
- * Desciption 所有请求前加上路径前缀
+ * Desciption 所有请求前加上路径前缀（暂未用）
  * Create By  li.bo
  * CreateTime 2018/3/13 10:29
  * UpdateTime 2018/3/13 10:29

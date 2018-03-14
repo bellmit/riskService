@@ -5,6 +5,7 @@ server:
 #  mapper-locations: classpath*:mapper/*.xml
 #  type-aliases-package: com.model
 
+
 spring:
 #  thymeleaf默认配置
   thymeleaf:
@@ -31,6 +32,12 @@ pagehelper:
 # spring-security请求地址
 token:
   url: http://localhost:8088/oauth/token
+
+# spring-boot-actuator敏感信息验证开关
+management:
+  security:
+    enabled: false
+  context-path: /actuator
 
 ---
 spring:
