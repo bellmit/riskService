@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bigdata.dao.SBBlankResultDao">
+
+    <resultMap id="sbBlankResult" type="com.bigdata.model.SBBlankResult">
+        <result column="id" property="id"/>
+        <result column="code" property="code"/>
+        <result column="dealer_name" property="dealer_name"/>
+        <result column="dealer_area" property="dealer_area"/>
+        <result column="dealer" property="dealer"/>
+        <result column="last_year_amount" property="last_year_amount"/>
+        <result column="last_year_avg_amount" property="last_year_avg_amount"/>
+        <result column="last_year_out_amount" property="last_year_out_amount"/>
+        <result column="last_year_out_avg_amount" property="last_year_out_avg_amount"/>
+        <result column="limit" property="limit"/>
+    </resultMap>
+
+    <select id="getAll" resultMap="sbBlankResult">
+        SELECT * FROM sb_blank_result
+    </select>
+
+    <update id="saveOne" parameterType="com.bigdata.model.SBBlankResult">
+        UPDATE sb_blank_result
+        <set>
+            <if test="last_year_amount != null">
+                last_year_amount = #{last_year_amount},
+            </if>
+            <if test="last_year_avg_amount != null">
+                last_year_avg_amount = #{last_year_avg_amount},
+            </if>
+            <if test="last_year_out_amount != null">
+                last_year_out_amount = #{last_year_out_amount},
+            </if>
+            <if test="last_year_out_avg_amount != null">
+                last_year_out_avg_amount = #{last_year_out_avg_amount},
+            </if>
+            <if test="limit != null">
+                `limit` = #{limit},
+            </if>
+            <if test="trade_amount != null">
+                trade_amount = #{trade_amount},
+            </if>
+            <if test="payment_numbers != null">
+                payment_numbers = #{payment_numbers}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

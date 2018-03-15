@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bigdata.model.PaginatedResult;
 import com.bigdata.service.PrivateBankStatementService;
 import com.bigdata.service.RiskControlDataService;
+import com.bigdata.service.SBBlankResultService;
 import com.bigdata.service.SBOrderService;
 import com.bigdata.util.Enum.PageConstant;
 import com.bigdata.util.Enum.ResponseResultEnum;
@@ -52,6 +53,9 @@ public class ShenYiHaoController {
 
     @Autowired
     private PrivateBankStatementService privateBankStatementService;
+
+    @Autowired
+    private SBBlankResultService sbBlankResultService;
 
     @RequestMapping(value = "/syh", method = RequestMethod.POST)
     public ResultBody<? extends Object> getDetail(HttpServletRequest request, HttpServletResponse response) {
@@ -147,6 +151,13 @@ public class ShenYiHaoController {
                 .setTotalPage(PageUtil.calculateTotalPage(sbOrderService.countOrders(map), perPage));
 
         return new ResultBody(ResponseResultEnum.SUCCESS.getFeatureType(), ResponseResultEnum.SUCCESS.getDescription(), result);
+    }
+
+    @PostMapping("/syh/blankResult")
+    public ResultBody<? extends Object> getBlankResult(HttpServletRequest request, HttpServletResponse response) {
+
+        sbBlankResultService.save();
+        return new ResultBody(ResponseResultEnum.SUCCESS.getFeatureType(), ResponseResultEnum.SUCCESS.getDescription(), "");
     }
 
 }

@@ -95,4 +95,24 @@
         YEAR(rq) = #{year}
         AND MONTH(rq) = #{month}
     </select>
+
+    <!--某年度，某经销商的订单金额-->
+    <select id="getAmountForYear" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT
+        SUM(jshj)
+        FROM sb_order
+        WHERE
+        YEAR(rq) = #{year}
+        AND ghdw = #{dealerName}
+    </select>
+
+    <!--某年度，某经销商的出库金额-->
+    <select id="getCkAmountForYear" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT
+        SUM(xsje)
+        FROM sb_ck_order
+        WHERE
+        YEAR(rq) = #{year}
+        AND ghdw = #{dealerName}
+    </select>
 </mapper>

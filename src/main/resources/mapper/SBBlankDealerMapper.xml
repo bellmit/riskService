@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bigdata.dao.SBBlankDealerDao">
+
+    <resultMap id="sbBlankDealer" type="com.bigdata.model.SBBlankDealer">
+        <result column="dealer" property="dealer"/>
+        <result column="limit" property="limit"/>
+        <result column="area" property="area"/>
+        <result column="trade_amount" property="trade_amount"/>
+        <result column="payment_numbers" property="payment_numbers"/>
+    </resultMap>
+
+    <select id="getOne" resultMap="sbBlankDealer">
+        SELECT * FROM sb_blank_dealer WHERE dealer LIKE CONCAT('%', #{dealer}, '%') LIMIT 1
+    </select>
+</mapper>

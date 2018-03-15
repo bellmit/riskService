@@ -19,4 +19,8 @@ public interface SBOrderDao {
     Integer getCount(Map<String, Object> map);
 
     Long getOrderAmount(Map<String, Object> map);
+
+    Long getAmountForYear(Map<String, Object> map);
+
+    Long getCkAmountForYear(Map<String, Object> map);
 }
