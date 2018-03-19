@@ -125,6 +125,8 @@ public class RiskControlDataServiceImpl implements RiskControlDataService {
         map.put("year", DateUtils.getYear(THIS_MONTH - 12));
         Long lastYearMonth = sbOrderService.getOrderAmount(map);
 
+        System.out.println("aaaaa:" + BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(lastYearMonth, thisMonth), lastYearMonth, 2), 100));
+
         return BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(lastYearMonth, thisMonth), lastYearMonth, 2), 100);
     }
 

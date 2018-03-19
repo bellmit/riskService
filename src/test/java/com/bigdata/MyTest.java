@@ -1,5 +1,6 @@
 package com.bigdata;
 
+import com.bigdata.util.BigDecimalUtils;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import lombok.extern.slf4j.Slf4j;
@@ -225,5 +226,11 @@ public class MyTest {
 
         Long r = list.stream().mapToLong(value -> Math.round(value)).sum();
         log.info("r:{}", r);
+    }
+
+    @Test
+    public void test14234() {
+        double a = BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(29419948L, 3911355L), 29419948L, 2), 100);
+        log.info(""+a);
     }
 }

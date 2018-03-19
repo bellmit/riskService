@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bigdata.model.PaginatedResult;
-import com.bigdata.service.PrivateBankStatementService;
-import com.bigdata.service.RiskControlDataService;
-import com.bigdata.service.SBBlankResultService;
-import com.bigdata.service.SBOrderService;
+import com.bigdata.model.RiskControlResult;
+import com.bigdata.model.RiskControlRule;
+import com.bigdata.service.*;
+import com.bigdata.util.DateUtils;
 import com.bigdata.util.Enum.PageConstant;
 import com.bigdata.util.Enum.ResponseResultEnum;
 import com.bigdata.util.HttpConnectionUtils;
@@ -15,6 +15,7 @@ import com.bigdata.util.PageUtil;
 import com.bigdata.util.ResultBody;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class ShenYiHaoController {
     private RiskControlDataService riskControlDataService;
 
     @Autowired
-    private PrivateBankStatementService privateBankStatementService;
+    private RiskControlService riskControlService;
 
     @Autowired
     private SBBlankResultService sbBlankResultService;
@@ -106,6 +107,15 @@ public class ShenYiHaoController {
                     .map(a -> a.get(a.size() - 1).toString())
                     .map(JSON::parseObject)
                     .get();
+
+            // 风控计算数据入库
+            RiskControlResult riskControlResult = new RiskControlResult();
+            riskControlResult.setResult(res.toJSONString());
+            riskControlResult.setRule(rules.toString());
+            riskControlResult.setYear(DateUtils.getYear(-1));
+            riskControlResult.setMonth(DateUtils.getMonth(-1));
+            riskControlService.saveOneResult(riskControlResult);
+
             return new ResultBody(ResponseResultEnum.SUCCESS.getFeatureType(), ResponseResultEnum.SUCCESS.getDescription(), res);
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,6 +168,42 @@ public class ShenYiHaoController {
 
         sbBlankResultService.save();
         return new ResultBody(ResponseResultEnum.SUCCESS.getFeatureType(), ResponseResultEnum.SUCCESS.getDescription(), "");
+    }
+
+    @PostMapping("/syh/riskControl")
+    public ResultBody<? extends Object> getRiskControl(HttpServletRequest request, HttpServletResponse response) {
+
+        List<RiskControlRule> rules = riskControlService.getAllRules();
+        RiskControlResult riskControlResult = riskControlService.getLastestResult();
+        JSONObject riskResult = JSON.parseObject(riskControlResult.getResult());
+        String ruleResult = riskControlResult.getRule();
+        // todo
+        JSONArray res = new JSONArray();
+        rules.forEach(rule -> {
+            JSONObject object = new JSONObject();
+            object.put("type", rule.getType());
+            object.put("monitorContent", rule.getMonitorContent());
+            object.put("threshold", rule.getThreshold());
+
+            String tmp = rule.getValue();
+            // 计算结果
+            StringBuffer value = new StringBuffer();
+            if (StringUtils.containsAny(tmp, ",")) {
+                String[] tmps = tmp.split(",");
+                for (String s : tmps) {
+                    value.append(riskResult.get(s)).append(" | ");
+                }
+                value.delete(value.length() - 4, value.length() - 1);
+            } else {
+                value.append(riskResult.get(tmp));
+            }
+            object.put("value", value);
+            // 计算是否触发
+            object.put("trigger", StringUtils.contains(ruleResult, rule.getRule()) ? 1 : 0);
+            res.add(object);
+        });
+
+        return new ResultBody(ResponseResultEnum.SUCCESS.getFeatureType(), ResponseResultEnum.SUCCESS.getDescription(), res);
     }
 
 }
