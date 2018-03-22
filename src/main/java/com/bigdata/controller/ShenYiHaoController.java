@@ -6,13 +6,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.bigdata.model.PaginatedResult;
 import com.bigdata.model.RiskControlResult;
 import com.bigdata.model.RiskControlRule;
-import com.bigdata.service.*;
+import com.bigdata.model.vo.RiskControlReport;
+import com.bigdata.service.RiskControlDataService;
+import com.bigdata.service.RiskControlService;
+import com.bigdata.service.SBBlankResultService;
+import com.bigdata.service.SBOrderService;
 import com.bigdata.util.DateUtils;
 import com.bigdata.util.Enum.PageConstant;
 import com.bigdata.util.Enum.ResponseResultEnum;
 import com.bigdata.util.HttpConnectionUtils;
 import com.bigdata.util.PageUtil;
 import com.bigdata.util.ResultBody;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Desciption 深一号决策流调用
@@ -178,12 +184,13 @@ public class ShenYiHaoController {
         JSONObject riskResult = JSON.parseObject(riskControlResult.getResult());
         String ruleResult = riskControlResult.getRule();
         // todo
-        JSONArray res = new JSONArray();
+        List<RiskControlReport> res = Lists.newArrayList();
         rules.forEach(rule -> {
-            JSONObject object = new JSONObject();
-            object.put("type", rule.getType());
-            object.put("monitorContent", rule.getMonitorContent());
-            object.put("threshold", rule.getThreshold());
+            RiskControlReport riskControlReport = new RiskControlReport();
+            riskControlReport.setType(rule.getType());
+            riskControlReport.setSubType(rule.getType() + (rule.getSubType() == null ? "" : rule.getSubType()));
+            riskControlReport.setMonitorContent(rule.getMonitorContent());
+            riskControlReport.setThreshold(rule.getThreshold());
 
             String tmp = rule.getValue();
             // 计算结果
@@ -197,13 +204,14 @@ public class ShenYiHaoController {
             } else {
                 value.append(riskResult.get(tmp));
             }
-            object.put("value", value);
+            riskControlReport.setValue(value.toString());
             // 计算是否触发
-            object.put("trigger", StringUtils.contains(ruleResult, rule.getRule()) ? 1 : 0);
-            res.add(object);
+            riskControlReport.setTrigger(StringUtils.contains(ruleResult, rule.getRule()) ? 1 : 0);
+            res.add(riskControlReport);
         });
+        Map<String, List<RiskControlReport>> result = res.stream().collect(Collectors.groupingBy(RiskControlReport::getSubType));
 
-        return new ResultBody(ResponseResultEnum.SUCCESS.getFeatureType(), ResponseResultEnum.SUCCESS.getDescription(), res);
+        return new ResultBody(ResponseResultEnum.SUCCESS.getFeatureType(), ResponseResultEnum.SUCCESS.getDescription(), result);
     }
 
 }
