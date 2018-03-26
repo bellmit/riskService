@@ -110,7 +110,9 @@ public class RiskControlDataServiceImpl implements RiskControlDataService {
         Long lastMonthPrivate = privateBankStatementService.getLastMonthCreditAmount(map);
         Long lastMonthPublic = publicBankStatementService.getLastMonthCreditAmount(map);
 
-        return BigDecimalUtils.div(BigDecimalUtils.sub(lastMonthPrivate + lastMonthPublic, thisMonthPrivate + thisMonthPublic), lastMonthPrivate + lastMonthPublic, 2) * 100;
+        double result = BigDecimalUtils.div(BigDecimalUtils.sub(lastMonthPrivate.doubleValue() + lastMonthPublic.doubleValue(), thisMonthPrivate.doubleValue() + thisMonthPublic.doubleValue()), lastMonthPrivate.doubleValue() + lastMonthPublic.doubleValue(), 2) * 100;
+
+        return result;
     }
 
     // 本月经销商订单金额较上年度同期下降比例
@@ -125,9 +127,9 @@ public class RiskControlDataServiceImpl implements RiskControlDataService {
         map.put("year", DateUtils.getYear(THIS_MONTH - 12));
         Long lastYearMonth = sbOrderService.getOrderAmount(map);
 
-        System.out.println("aaaaa:" + BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(lastYearMonth, thisMonth), lastYearMonth, 2), 100));
+        double result = BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(lastYearMonth.doubleValue(), thisMonth.doubleValue()), lastYearMonth.doubleValue(), 2), 100);
 
-        return BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(lastYearMonth, thisMonth), lastYearMonth, 2), 100);
+        return result;
     }
 
     // 本月经销商订单金额较上月下降比例
@@ -143,7 +145,9 @@ public class RiskControlDataServiceImpl implements RiskControlDataService {
         map.put("month", DateUtils.getMonth(THIS_MONTH - 1));
         Long lastMonth = sbOrderService.getOrderAmount(map);
 
-        return BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(lastMonth, thisMonth), lastMonth, 2), 100);
+        double result = BigDecimalUtils.mul(BigDecimalUtils.div(BigDecimalUtils.sub(lastMonth.doubleValue(), thisMonth.doubleValue()), lastMonth.doubleValue(), 2), 100);
+
+        return result;
     }
 
     // 本月回款金额
@@ -162,7 +166,9 @@ public class RiskControlDataServiceImpl implements RiskControlDataService {
         Long thisMonthPrivate = privateBankStatementService.getLastMonthCreditAmount(map);
         Long thisMonthPublic = publicBankStatementService.getLastMonthCreditAmount(map);
 
-        return thisMonthPrivate + thisMonthPublic;
+        double result = BigDecimalUtils.div(BigDecimalUtils.add(thisMonthPrivate.doubleValue(), thisMonthPublic.doubleValue()), 10000, 0);
+
+        return result;
     }
 
     // TODO
@@ -192,7 +198,7 @@ public class RiskControlDataServiceImpl implements RiskControlDataService {
         map.put("month", DateUtils.getMonth(THIS_MONTH - 2));
         Long thirdMonth = privateBankStatementService.getLastMonthCreditAmount(map) + publicBankStatementService.getLastMonthCreditAmount(map);
 
-        return BigDecimalUtils.div(BigDecimalUtils.div(BigDecimalUtils.add(thisMonth, lastMonth, thirdMonth), 3), 10000, 2);
+        return BigDecimalUtils.div(BigDecimalUtils.div(thisMonth.doubleValue() + lastMonth.doubleValue() + thirdMonth.doubleValue(), 3), 10000, 2);
     }
 
     // 连续3个月出现经销商月度订单金额较上月下降
@@ -217,11 +223,11 @@ public class RiskControlDataServiceImpl implements RiskControlDataService {
         Long fourthMonth = sbOrderService.getOrderAmount(map);
 
         // 三个月下降率的平均值
-        return BigDecimalUtils.div(BigDecimalUtils.add(
-                BigDecimalUtils.div(BigDecimalUtils.sub(lastMonth, thisMonth), lastMonth, 2) * 100,
-                BigDecimalUtils.div(BigDecimalUtils.sub(thirdMonth, lastMonth), thirdMonth, 2) * 100,
-                BigDecimalUtils.div(BigDecimalUtils.sub(fourthMonth, thirdMonth), fourthMonth, 2) * 100
-        ), 3, 0);
+        return BigDecimalUtils.div(
+                BigDecimalUtils.div(BigDecimalUtils.sub(lastMonth.doubleValue(), thisMonth.doubleValue()), lastMonth.doubleValue(), 2) * 100 +
+                BigDecimalUtils.div(BigDecimalUtils.sub(thirdMonth.doubleValue(), lastMonth.doubleValue()), thirdMonth.doubleValue(), 2) * 100 +
+                BigDecimalUtils.div(BigDecimalUtils.sub(fourthMonth.doubleValue(), thirdMonth.doubleValue()), fourthMonth.doubleValue(), 2) * 100
+        , 3, 0);
     }
 
     // 近3个月经销商月平均订单金额
@@ -242,7 +248,7 @@ public class RiskControlDataServiceImpl implements RiskControlDataService {
         Long thirdMonth = sbOrderService.getOrderAmount(map);
 
         return BigDecimalUtils.div(
-                BigDecimalUtils.add(thisMonth, lastMonth, thirdMonth), 3 * 10000, 0
+                thisMonth.doubleValue() + lastMonth.doubleValue() + thirdMonth.doubleValue(), 3 * 10000, 0
         );
     }
 
