@@ -19,12 +19,15 @@ import com.bigdata.util.PageUtil;
 import com.bigdata.util.ResultBody;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +47,8 @@ import java.util.stream.Collectors;
  * UpdateTime 2018/01/26 18:14
  */
 @RestController
+@RequestMapping("/syh")
+@Api(value = "syh", description = "深一号风控", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class ShenYiHaoController {
 
@@ -64,7 +69,8 @@ public class ShenYiHaoController {
     @Autowired
     private SBBlankResultService sbBlankResultService;
 
-    @RequestMapping(value = "/syh", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @ApiOperation(value = "调用风控接口", notes = "调用风控系统，结果入库")
     public ResultBody<? extends Object> getDetail(HttpServletRequest request, HttpServletResponse response) {
 
         /* 入参 **/
@@ -131,7 +137,7 @@ public class ShenYiHaoController {
 //        return new ResultBody(ResponseResultEnum.SUCCESS.getFeatureType(), ResponseResultEnum.SUCCESS.getDescription(), resultObj.getJSONObject("data"));
     }
 
-    @PostMapping("/syh/order")
+    @PostMapping("/order")
     public ResultBody<? extends Object> getOrders(HttpServletRequest request, @RequestBody String paramsString, HttpServletResponse response) {
 
         JSONObject params = JSON.parseObject(paramsString);
@@ -169,14 +175,14 @@ public class ShenYiHaoController {
         return new ResultBody(ResponseResultEnum.SUCCESS.getFeatureType(), ResponseResultEnum.SUCCESS.getDescription(), result);
     }
 
-    @PostMapping("/syh/blankResult")
+    @PostMapping("/blankResult")
     public ResultBody<? extends Object> getBlankResult(HttpServletRequest request, HttpServletResponse response) {
 
         sbBlankResultService.save();
         return new ResultBody(ResponseResultEnum.SUCCESS.getFeatureType(), ResponseResultEnum.SUCCESS.getDescription(), "");
     }
 
-    @PostMapping("/syh/riskControl")
+    @PostMapping("/riskControl")
     public ResultBody<? extends Object> getRiskControl(HttpServletRequest request, HttpServletResponse response) {
 
         List<RiskControlRule> rules = riskControlService.getAllRules();
@@ -191,6 +197,7 @@ public class ShenYiHaoController {
             riskControlReport.setSubType(rule.getType() + (rule.getSubType() == null ? "" : rule.getSubType()));
             riskControlReport.setMonitorContent(rule.getMonitorContent());
             riskControlReport.setThreshold(rule.getThreshold());
+            String unit = rule.getUnit() == null ? "" : rule.getUnit();
 
             String tmp = rule.getValue();
             // 计算结果
@@ -198,11 +205,15 @@ public class ShenYiHaoController {
             if (StringUtils.containsAny(tmp, ",")) {
                 String[] tmps = tmp.split(",");
                 for (String s : tmps) {
-                    value.append(riskResult.get(s)).append(" | ");
+                    value.append(riskResult.get(s)).append(unit).append(" | ");
                 }
-                value.delete(value.length() - 4, value.length() - 1);
+                value.delete(value.length() - 3, value.length() - 1);
             } else {
-                value.append(riskResult.get(tmp));
+                if ("是否".equals(unit)) {
+                    value.append(riskResult.get(tmp).toString().equals("0") ? "否" : "是");
+                } else {
+                    value.append(riskResult.get(tmp)).append(unit);
+                }
             }
             riskControlReport.setValue(value.toString());
             // 计算是否触发

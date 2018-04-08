@@ -56,7 +56,7 @@ public class RiskControlDataServiceImpl implements RiskControlDataService {
         params.setFrms_lastM_decrease_rate(frms_lastM_decrease_rate());// 本月经销商订单金额较上月下降比例
         params.setFrms_payback_amount(frms_payback_amount());// 本月回款金额
         params.setFrms_lastS_amount_decrease_rate(0);// 本季度经销商累计订单金额较上年度同期下降比例
-        params.setFrms_refund_amount_rate(0);// 本月经销商订单退货金额占当月订单总额的比率（订单退货率）
+        params.setFrms_refund_amount_rate(0.21);// 本月经销商订单退货金额占当月订单总额的比率（订单退货率）
         // 经营风险B
         params.setFrms_last3M_avg_payback_amount(frms_last3M_avg_payback_amount());// 最近三个月公司、法人账户月平均销售回款入金额度
         params.setFrms_3M_payback_amount(frms_last3M_avg_payback_amount());// 连续出现3个月出现公司、法人账户累计销售回款入金额度
@@ -64,18 +64,18 @@ public class RiskControlDataServiceImpl implements RiskControlDataService {
         params.setFrms_last3M_avg_amount(frms_last3M_avg_amount());// 近3个月经销商月平均订单金额
         params.setFrms_last3M_refund_increase_rate(0);// 连续3个月月出现经销商订单退货率较上月增长比率
         // 财务风险A
-        params.setFrms_net_asset_month_decrease_rate(0);// 公司净资产较上月下降比例
-        params.setFrms_company_debt_rate(BigDecimalUtils.div(108585492L, 331237819L, 2) * 100);// 公司资产负债率
-        params.setFrms_company_gross_margin(BigDecimalUtils.div(117742045L, 732071329L, 2) * 100);// 公司毛利润率
-        params.setFrms_company_net_profit_rate(BigDecimalUtils.div(57653541L, 732071329L, 2) * 100);// 净利润率
-        params.setFrms_receivables_turnover_days(BigDecimalUtils.div(BigDecimalUtils.add(44920879L, 31881817L) / 2 * 360, 732071329L, 2));// 公司应收账款周转天数
-        params.setFrms_stock_turnover_days(BigDecimalUtils.div(BigDecimalUtils.add(188718629L, 144589746L) / 2 * 360, 613794926L, 2));// 存货周转天数
-        params.setFrms_main_business_amount_mount_decrease_rate(0);// 本月公司主营业务收入金额较上月下降比例
+        params.setFrms_net_asset_month_decrease_rate(BigDecimalUtils.div(BigDecimalUtils.sub(292749291L, 294927490L), 294927490L, 2) * 100);// 公司净资产较上月下降比例
+        params.setFrms_company_debt_rate(BigDecimalUtils.div(186980712L, 481908203L, 2) * 100);// 公司资产负债率
+        params.setFrms_company_gross_margin(BigDecimalUtils.div(12450784L, 59509830L, 2) * 100);// 公司毛利润率
+        params.setFrms_company_net_profit_rate(BigDecimalUtils.div(4847293L, 59509830L, 2) * 100);// 净利润率
+        params.setFrms_receivables_turnover_days(BigDecimalUtils.div(BigDecimalUtils.add(46231015L, 50321635L) / 2 * 360, 59509830L, 2));// 公司应收账款周转天数
+        params.setFrms_stock_turnover_days(BigDecimalUtils.div(BigDecimalUtils.add(229187526L, 226216574L) / 2 * 360, 46969035L, 2));// 存货周转天数
+        params.setFrms_main_business_amount_mount_decrease_rate(BigDecimalUtils.div(BigDecimalUtils.sub(32865246L, 59509830L), 32865246L, 2) * 100);// 本月公司主营业务收入金额较上月下降比例
         params.setFrms_last_month_result_a(1);// 上月通过
         // 财务风险B
-        params.setFrms_net_asset_year_decrease_rate(BigDecimalUtils.div(BigDecimalUtils.sub(455147973L, 331237819L), 455147973L, 2) * 100);// 公司年末净资产余额较年初下降比例
-        params.setFrms_quick_rate(BigDecimalUtils.div(BigDecimalUtils.sub(303421933L, 144589746L), 108585492L, 2) * 100);// 公司速动比率
-        params.setFrms_liquidity_rate(BigDecimalUtils.div(303421933L, 108585492L, 2) * 100);// 流动比率
+        params.setFrms_net_asset_year_decrease_rate(BigDecimalUtils.div(BigDecimalUtils.sub(290080197L, 294927490L), 290080197L, 2) * 100);// 公司年末净资产余额较年初下降比例
+        params.setFrms_quick_rate(BigDecimalUtils.div(BigDecimalUtils.sub(426395676L, 226216574L), 186980712L, 2) * 100);// 公司速动比率
+        params.setFrms_liquidity_rate(BigDecimalUtils.div(426395676L, 186980712L, 2) * 100);// 流动比率
         params.setFrms_main_business_amount_season_decrease_rate(0);// 本季度公司主营业务收入金额较上年同期下降比例
         params.setFrms_season_net_profit_amount(1);// 本季度公司累计净利润金额
         params.setFrms_is_loss(0);// 经我司评估本年度公司净利润将处于亏损状态

@@ -41,7 +41,7 @@ public class RiskControlData {
     private double frms_last3M_avg_amount;                          // 近3个月经销商月平均订单金额
     private double frms_last3M_refund_increase_rate;                // 连续3个月月出现经销商订单退货率较上月增长比率
     // 财务风险A
-    private int frms_net_asset_month_decrease_rate;                 // 公司净资产较上月下降比例
+    private double frms_net_asset_month_decrease_rate;                 // 公司净资产较上月下降比例
     private double frms_company_debt_rate;                          // 公司资产负债率
     private double frms_company_gross_margin;                       // 公司毛利润率
     private double frms_company_net_profit_rate;                    // 净利润率

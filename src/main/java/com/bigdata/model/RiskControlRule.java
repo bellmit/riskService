@@ -26,4 +26,5 @@ public class RiskControlRule {
     private String monitorContent;  // 监测内容
     private String threshold;       // 阈值
     private String value;           // 当前指标
+    private String unit;            // 单位
 }

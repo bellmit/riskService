@@ -10,6 +10,7 @@
         <result column="monitor_content" property="monitorContent"/>
         <result column="threshold" property="threshold"/>
         <result column="value" property="value"/>
+        <result column="unit" property="unit"/>
     </resultMap>
 
     <resultMap id="riskControlResult" type="com.bigdata.model.RiskControlResult">
