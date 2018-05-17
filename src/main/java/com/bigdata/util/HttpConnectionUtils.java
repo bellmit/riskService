@@ -8,14 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * @Copyright (c) by adinnet information technology Co., Ltd.
- * @All right reserved.
- * @Create Date: 2017/7/28 16:25
- * @Create Author: wangweizhen
- * @File Name: buytoday
- * @Last version: 1.0
- */
 public class HttpConnectionUtils {
     private static final String charset = "utf-8";
     private static final String contentType = "application/json";
@@ -25,8 +17,6 @@ public class HttpConnectionUtils {
      *
      * @param openUrl
      * @param json
-     * @return
-     * @author:wangweizhen
      */
     public static String setConnection1(String openUrl, JSONObject json) {
         String sTotalString = "";
